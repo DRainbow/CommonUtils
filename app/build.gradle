@@ -1,11 +1,11 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
 
     defaultConfig {
-        applicationId "com.android.sugar.commonutils"
+//        applicationId "com.android.sugar.commonutils"
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
@@ -24,3 +24,16 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.0.0'
 }
+
+task clearJar(type: Delete) {
+    delete 'build/libs/commonutils.jar'
+}
+
+task makeJar(type: Copy) {
+    from('build/intermediates/bundles/release/')
+    into('build/libs/')
+    include('classes.jar')
+    rename ('classes.jar', 'commonutils.jar')
+}
+
+makeJar.dependsOn(clearJar, build)
